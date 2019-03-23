@@ -49,7 +49,7 @@ public class Bootstrap : MonoBehaviour
     bool primaryColor = true;
     Random r;
     quaternion rQuat;
-    float3 rPos;
+    float3 rPos, rScale;
     float rLife, rSpeed;
     #endregion
 
@@ -61,7 +61,7 @@ public class Bootstrap : MonoBehaviour
 
         // Create our Entity archetype to spawn our cubes from later
         cubeArch = entityManager.CreateArchetype(
-                                                ComponentType.ReadWrite<Translation>(), ComponentType.ReadWrite<Rotation>(),
+                                                ComponentType.ReadWrite<Translation>(), ComponentType.ReadWrite<Rotation>(), ComponentType.ReadWrite<NonUniformScale>(),
                                                 ComponentType.ReadWrite<LifeTime>(), ComponentType.ReadWrite<Speed>(), 
                                                 ComponentType.ReadOnly<LocalToWorld>() // Needs this (is the overall transform representation) but doesn't have to be "directly" wrote to or read from
                                                 );
@@ -115,6 +115,7 @@ public class Bootstrap : MonoBehaviour
         r = new Random((uint)UnityEngine.Random.Range(0, 1000000));
 
         rPos = r.NextFloat3();
+        rScale = r.NextFloat3(.5f, 2.0f);
         rLife = r.NextFloat(2, 10);
         rSpeed = r.NextFloat(1, 20);
         rQuat = r.NextQuaternionRotation();
@@ -125,6 +126,7 @@ public class Bootstrap : MonoBehaviour
 
         // Set all of the entity data
         entityManager.SetComponentData(cubeEntity, new Translation { Value = rPos }); // This is the Starting Position
+        entityManager.SetComponentData(cubeEntity, new NonUniformScale { Value = rScale }); // This is the Starting Position
         entityManager.SetComponentData(cubeEntity, new Rotation { Value = rQuat }); // This is the Starting Rotation
         entityManager.SetComponentData(cubeEntity, new LifeTime { Value = rLife }); // This determines how long the cube lasts
         entityManager.SetComponentData(cubeEntity, new Speed { Value = rSpeed }); // This is determines the rotation and movement speed
