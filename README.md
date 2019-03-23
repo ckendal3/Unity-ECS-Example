@@ -4,6 +4,10 @@
 This repo is a testing ground for Unity's ECS system. It will contain examples for key systems such as movement and lifetime systems. 
 Hopefully it helps others taking the first step into the realm of "Performance by Default"...
 
+## Preview
+![Youtube Link](https://i.imgur.com/xtVkaqV.png)
+https://www.youtube.com/watch?v=nqOs8C-LRIE
+
 ## Instructions
 There is only one scene in the project. The boostrap file handles the creation of entities (for now) with multiple settings.
 While most values are random within a given range, the settings exposed to the inspector are used for testing workload specifically.
@@ -43,8 +47,10 @@ While most values are random within a given range, the settings exposed to the i
 
 
 ## Future Additions
-- Utilize batch instantions and batch destruction
-- Implement Batch Raycast System for hit detection
+- Utilize batch instantiations and batch destruction
+- Implement Batch Raycast System for Hit Detection
+  1. Setup Hit System (Setups data for batch raycast)
+  2. Hit System (Perform Batch Raycast/Hits)
 
 
 ## From ckendal3
