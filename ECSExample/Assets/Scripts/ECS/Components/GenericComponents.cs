@@ -1,4 +1,5 @@
 ﻿using Unity.Entities;
+using Unity.Mathematics;
 
 /*
  * This class is strictly for generalized components
@@ -18,6 +19,15 @@ public struct LifeTime : IComponentData
 public struct Speed : IComponentData
 {
     public float Value;
+}
+
+
+/// <summary>
+/// This was the position of the entity in the previous frame.
+/// </summary>
+public struct PreviousTranslation : IComponentData
+{
+    public float3 Value;
 }
 
 /// <summary>
