@@ -12,7 +12,7 @@ using UnityEngine;
 public class MovementSystem : JobComponentSystem
 {
     [BurstCompile]
-    public struct MovementJob : IJobProcessComponentData<Translation, Rotation, Speed>
+    public struct MovementJob : IJobForEach<Translation, Rotation, Speed>
     {
         // Time it took to render the last frame
         public float deltaTime;

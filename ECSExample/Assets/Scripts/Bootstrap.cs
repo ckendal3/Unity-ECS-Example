@@ -4,6 +4,7 @@ using Unity.Transforms;
 using UnityEngine;
 using Unity.Rendering;
 using Random = Unity.Mathematics.Random;
+using UnityEngine.UI;
 
 public class Bootstrap : MonoBehaviour
 {
@@ -57,7 +58,7 @@ public class Bootstrap : MonoBehaviour
     void Start()
     {
         // Get the entity manager (or create it)
-        entityManager = World.Active.GetOrCreateManager<EntityManager>();
+        entityManager = World.Active.EntityManager;
 
         // Create our Entity archetype to spawn our cubes from later
         cubeArch = entityManager.CreateArchetype(
@@ -65,6 +66,29 @@ public class Bootstrap : MonoBehaviour
                                                 ComponentType.ReadWrite<LifeTime>(), ComponentType.ReadWrite<Speed>(), 
                                                 ComponentType.ReadOnly<LocalToWorld>() // Needs this (is the overall transform representation) but doesn't have to be "directly" wrote to or read from
                                                 );
+    }
+
+    public void UpdateCubeSpawnRate(Text text)
+    {
+        float result;
+        Debug.Log("String Rate: " + text.text);
+
+        if (float.TryParse(text.text, out result))
+        {
+            cubeSpawnRate = result;
+        }
+    }
+
+    public void UpdateCubeSpawnAmount(Text text)
+    {
+        int result;
+        Debug.Log("String Count: " + text);
+
+        if (int.TryParse(text.text, out result))
+        {
+            NumCubesToSpawnAtOnce = result;
+        }
+        
     }
 
 
@@ -107,6 +131,7 @@ public class Bootstrap : MonoBehaviour
         
     }
 
+    // TRY TODO: Batch instantiate cubes then use system(s) to set the random values on the cubes.
     // Spawn Cubes and set their values
     public void SpawnCube()
     {

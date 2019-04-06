@@ -10,7 +10,7 @@ using Unity.Burst;
 public class LifeTimeSystem : JobComponentSystem
 {
     [BurstCompile]
-    public struct LifeTimeJob : IJobProcessComponentData<LifeTime>
+    public struct LifeTimeJob : IJobForEach<LifeTime>
     {
         public float deltaTime; // Time it took to render the last frame
 

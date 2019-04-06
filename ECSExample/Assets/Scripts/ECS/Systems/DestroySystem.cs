@@ -16,7 +16,7 @@ public class DestroySystem : JobComponentSystem
     EndSimulationEntityCommandBufferSystem entityCommandBuffer;
 
     [BurstCompile]
-    public struct DestroyJob : IJobProcessComponentDataWithEntity<LifeTime>
+    public struct DestroyJob : IJobForEachWithEntity<LifeTime>
     {
         // Creates a queue of commands to execute after the job is over (these commands are done on the main thread)
         [ReadOnly] public EntityCommandBuffer CommandBuffer;
@@ -49,7 +49,7 @@ public class DestroySystem : JobComponentSystem
     protected override void OnCreateManager()
     {
         // Prevents us from creating this every frame
-        entityCommandBuffer = World.GetOrCreateManager<EndSimulationEntityCommandBufferSystem>();
+        entityCommandBuffer = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
     }
 
 }

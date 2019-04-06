@@ -13,7 +13,7 @@ public class RotationSystem : JobComponentSystem
 {
     [BurstCompile] // The good stuff
     [RequireComponentTag(typeof(RotationOnlyTag))] // Entity must have a "RotationOnlyTag" to rotate
-    public struct RotationJob : IJobProcessComponentData<Rotation, Speed>
+    public struct RotationJob : IJobForEach<Rotation, Speed>
     {
         // Time it took to render the last frame
         public float deltaTime;
