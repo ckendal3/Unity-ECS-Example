@@ -15,7 +15,7 @@ public class MovementSystem : JobComponentSystem
     public struct MovementJob : IJobForEach<Translation, Rotation, Speed>
     {
         // Time it took to render the last frame
-        public float deltaTime;
+        [ReadOnly] public float deltaTime;
 
         // Execute is where the actual logic (system) takes place such as manipulation of data
         public void Execute(ref Translation position, [ReadOnly] ref Rotation rotation, [ReadOnly] ref Speed speed)

@@ -71,18 +71,18 @@ public class Bootstrap : MonoBehaviour
     public void UpdateCubeSpawnRate(Text text)
     {
         float result;
-        Debug.Log("String Rate: " + text.text);
 
         if (float.TryParse(text.text, out result))
         {
             cubeSpawnRate = result;
         }
+
+        timeSinceLastSpawn = cubeSpawnRate;
     }
 
     public void UpdateCubeSpawnAmount(Text text)
     {
         int result;
-        Debug.Log("String Count: " + text);
 
         if (int.TryParse(text.text, out result))
         {

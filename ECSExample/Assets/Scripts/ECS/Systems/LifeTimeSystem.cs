@@ -2,6 +2,7 @@
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Burst;
+using Unity.Collections;
 
 /// <summary>
 /// This System controls the lifetime 'timer' of the entities (cubes)
@@ -12,7 +13,7 @@ public class LifeTimeSystem : JobComponentSystem
     [BurstCompile]
     public struct LifeTimeJob : IJobForEach<LifeTime>
     {
-        public float deltaTime; // Time it took to render the last frame
+        [ReadOnly] public float deltaTime; // Time it took to render the last frame
 
         public void Execute(ref LifeTime lifeTime)
         {

@@ -18,8 +18,7 @@ public class DestroySystem : JobComponentSystem
     [BurstCompile]
     public struct DestroyJob : IJobForEachWithEntity<LifeTime>
     {
-        // Creates a queue of commands to execute after the job is over (these commands are done on the main thread)
-        [ReadOnly] public EntityCommandBuffer CommandBuffer;
+        [WriteOnly] public EntityCommandBuffer.Concurrent CommandBuffer;
 
         public void Execute(Entity entity, int index, [ReadOnly] ref LifeTime lifeTime)
         {
@@ -27,7 +26,7 @@ public class DestroySystem : JobComponentSystem
             if (lifeTime.Value < 0)
             {
                 // Queue up command to destroy the entity (cube)
-                CommandBuffer.DestroyEntity(entity);
+                CommandBuffer.DestroyEntity(index, entity);
             }
         }
     }
@@ -36,10 +35,11 @@ public class DestroySystem : JobComponentSystem
     {
         var job = new DestroyJob
         {
-            CommandBuffer = entityCommandBuffer.CreateCommandBuffer() // Create the command buffer that queues commands
-        }.ScheduleSingle(this, inputDeps);
+            // Create the command buffer that queues commands - across threads
+            CommandBuffer = entityCommandBuffer.CreateCommandBuffer().ToConcurrent()
+            
+        }.Schedule(this, inputDeps);
 
-        // Must be added now as of 0.0.21
         // "Ensures that the EntityCommandBufferSystem waits for the job to complete before playing back the command buffer." - Official Unity Manual
         entityCommandBuffer.AddJobHandleForProducer(job);
 
