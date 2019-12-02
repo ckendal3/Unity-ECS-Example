@@ -4,24 +4,24 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 /// <summary>
 /// This System controls the rotation of the entities (cubes)
 /// </summary>
+[UpdateAfter(typeof(MovementSystem))]
 public class RotationSystem : JobComponentSystem
 {
-    [BurstCompile] // The good stuff
+    [BurstCompile]
     [RequireComponentTag(typeof(RotationOnlyTag))] // Entity must have a "RotationOnlyTag" to rotate
     public struct RotationJob : IJobForEach<Rotation, Speed>
     {
         // Time it took to render the last frame
-        public float deltaTime;
+        public float DeltaTime;
 
         // Execute is where the actual logic (system) takes place such as manipulation of data
         public void Execute(ref Rotation rotation, [ReadOnly] ref Speed speed)
         {
-            rotation.Value = math.mul((rotation.Value), quaternion.AxisAngle(math.up(), speed.Value * deltaTime));
+            rotation.Value = math.mul((rotation.Value), quaternion.AxisAngle(math.up(), speed.Value * DeltaTime));
         }
     }
 
@@ -29,10 +29,9 @@ public class RotationSystem : JobComponentSystem
     {
         var job = new RotationJob
         {
-            deltaTime = Time.deltaTime // passes the deltaTime into the RotationJob
+            DeltaTime = Time.DeltaTime
         }.Schedule(this, inputDeps);
 
         return job;
-
     }
 }

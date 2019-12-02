@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using Unity.Entities;
+﻿using Unity.Entities;
 using Unity.Jobs;
 using Unity.Burst;
 using Unity.Collections;
@@ -11,25 +10,24 @@ using Unity.Collections;
 public class LifeTimeSystem : JobComponentSystem
 {
     [BurstCompile]
-    public struct LifeTimeJob : IJobForEach<LifeTime>
+    public struct UpdateTimeJob : IJobForEach<LifeTime>
     {
-        [ReadOnly] public float deltaTime; // Time it took to render the last frame
+        [ReadOnly] public float DeltaTime;
 
         public void Execute(ref LifeTime lifeTime)
         {
-            // decrease the lifetime on the entity
-            lifeTime.Value = lifeTime.Value - deltaTime;
+            lifeTime.Value = lifeTime.Value - DeltaTime;
         }
     }
 
     protected override JobHandle OnUpdate(JobHandle inputDeps)
-    {
-        var job = new LifeTimeJob
+    {    
+        var timeJob = new UpdateTimeJob
         {
-            deltaTime = Time.deltaTime
-        };
+            DeltaTime = Time.DeltaTime
+        }.Schedule(this, inputDeps);
 
-        return job.Schedule(this, inputDeps);
+        return timeJob;
     }
 
 }
